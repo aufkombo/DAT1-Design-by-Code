@@ -1,31 +1,29 @@
-int lineCount = 3000;
+int lineCount2 = 2000;
 
-ArrayList<Float> startLocations = new ArrayList<Float>();
-ArrayList<Float> endLocations = new ArrayList<Float>();
+ArrayList<Float> startLocations2 = new ArrayList<Float>();
+ArrayList<Float> endLocations2 = new ArrayList<Float>();
 
-float rotatetrigger = 0;
+float rotatetrigger4 = 0;
 
+float counter2=0;
 
-void setupMovementScene() {
-  for (int i=0; i<lineCount; i++) {
-    startLocations.add(random(350, width-350));
-    endLocations.add(random(350, width-350));
+void setupMovementScene2() {
+  for (int i=0; i<lineCount2; i++) {
+    startLocations2.add(random(3500, width-3500));
+    endLocations2.add(random(3500, width-3500));
   }
-  rotatetrigger = 0;
 }
 
-void drawMovementScene() {
-  println(counter);
-  colorMode(RGB, 255, 255, 255);
+void drawMovementScene2() {
   
-  println(rotatetrigger);
+  colorMode(RGB, 255, 255, 255);
 
   if (frameCount %60 ==0) {
-    startLocations.clear();
-    startLocations.addAll(endLocations);
-    endLocations.clear();
-    for (int i=0; i<lineCount; i++) {
-      endLocations.add(random(50, width-50));
+    startLocations2.clear();
+    startLocations2.addAll(endLocations2);
+    endLocations2.clear();
+    for (int i=0; i<lineCount2; i++) {
+      endLocations2.add(random(20, width-250));
     }
   }
 
@@ -46,50 +44,37 @@ void drawMovementScene() {
 
   background(0);
   stroke(255);
-  strokeWeight(counter);
-  stroke(r, g, b, trcl);
-  scale(0.75);
+  strokeWeight(counter2);
+  stroke(r, g, b);
+  scale(0.5);
 
-
-rotatetrigger = map(noise(92, frameCount*0.001), 0, 1, 0.1, 1.0);
 //rotatetrigger = random(0.1, 1.5);
 
-
-
-rotateX(radians(frameCount*rotatetrigger));
-rotateY(radians(frameCount*rotatetrigger/2));
-rotate(radians(frameCount*rotatetrigger*2));
-
-if(rotatetrigger >= 0.2){
-rotatetrigger = 0;
-}
-
 noFill();
-strokeWeight(10);
-sphere(100);
-strokeWeight(counter);
+
+strokeWeight(counter2);
 
 strokeCap(PROJECT);
 
 
 
-  for (int i=0; i<lineCount; i++) {
-    float start = startLocations.get(i);
-    float end = endLocations.get(i);
+  for (int i=0; i<lineCount2; i++) {
+    float start2 = startLocations2.get(i);
+    float end2 = endLocations2.get(i);
 
-    float time = (float) frameCount %60 /60;
-    float currentStart = lerp(start, end, time);
-    float currentEnd = lerp(end, start, time);
+    float time2 = (float) frameCount %60 /60;
+    float currentStart2 = lerp(start2, end2, time2);
+    float currentEnd2 = lerp(end2, start2, time2);
 
     //time = pow(time,2); // Linear
-    time = pow(time, 4); // Ease In 
+    time2 = pow(time2, 4); // Ease In 
     //time = pow(time, 1f/8); // Ease Out
       //time = 0.5 - (cos(PI*time) /2); //Ease In-Out
 
-    float location = lerp(currentStart, currentEnd, 0);
-    rotate(0.01);
-    counter=counter+0.001;
-    line(location, -64, location, 64);
+    float location2 = lerp(currentStart2, currentEnd2, 0);
+    rotate(0.5);
+    counter2=counter2+0.001;
+    line(location2, -64, location2, 64);
     
     
     //pushMatrix();
@@ -97,10 +82,10 @@ strokeCap(PROJECT);
     //popMatrix();  
     
 
-    if (counter >= 20) {
-      counter = 20;
+    if (counter2 >= 20) {
+      counter2 = 30;
     }
-    
+
     //frameCout
   }
 }
