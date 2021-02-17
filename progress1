@@ -1,52 +1,41 @@
-float counter = 2;
-int rotatecounter = 15;
-color gridForeground = color(55,255,40);
-color gridBackground = color(0, 0, 0);
-int rund = 0;
-int invert = 255;
+import peasy.*;
+PeasyCam cam;
 
+int scene = 0;
 
-void setupGridScene() {
+void setup(){
+size(1200,720, P3D);
+
+setupGridScene();
+setupColorScene();
+setupMovementScene();
+setupMovementScene2();
+
 }
 
-void drawGridScene() {
-
-  println(counter);
-  
-  counter=counter+0.01;
-  
-  if (counter > 7.5) {
-    counter = 5;
-
-    color tmp = gridForeground;
-    gridForeground = gridBackground;
-    gridBackground = tmp;
-    rotatecounter =rotatecounter+5;
-    rund = rund+5;
-
-    if (rund >= 20) {
-      rund=0;
-    }
+void draw(){
+  background(255);
+  //println(frameCount);
+  if(frameCount % 130 == 0){ 
+    
+    scene = floor(random(4));
+  }
+  switch(scene){
+  case 0:
+  drawGridScene();
+  break;
+  case 1:
+  drawColorScene();
+  break;
+  case 2:
+  drawMovementScene();
+  break;
+  case 3:
+  drawMovementScene2();
+  break;
   }
 
-  colorMode(RGB, 255, 255, 255);
 
-  background(gridBackground);
+//println(scene);
 
-  int cellCountY = (int) pow(2, counter);
-  float cellSize = (float) height / cellCountY;
-  int cellCountX = (int) (width / cellSize);
-
-  translate(width/2, height/2);
-
-  for (int x = -cellCountX / 2; x<= cellCountX /2; x++) {
-    for (int y = -cellCountY / 2; y<= cellCountY /2; y++) {
-      if ((x +y) % 45 ==0) {
-        noStroke();
-        fill(invert);
-        rect(x * cellSize/2, y * cellSize/4, x/2 * cellSize/2, y/2 * cellSize/6, rund);
-        rotate(rotatecounter);
-      }
-    }
-  }
 }
