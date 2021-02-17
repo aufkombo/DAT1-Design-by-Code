@@ -1,68 +1,106 @@
-float counter = 2;
-int rotatecounter = 15;
-color gridForeground = color(55, 140, 40);
-color gridBackground = color(0, 0, 0);
-int rund = 0;
-float invert = 50; 
-//float rotatetrigger3 = 5;
+int lineCount = 3000;
+
+ArrayList<Float> startLocations = new ArrayList<Float>();
+ArrayList<Float> endLocations = new ArrayList<Float>();
+
+float rotatetrigger = 0;
 
 
-void setupGridScene() {
+void setupMovementScene() {
+  for (int i=0; i<lineCount; i++) {
+    startLocations.add(random(350, width-350));
+    endLocations.add(random(350, width-350));
+  }
+  rotatetrigger = 0;
 }
 
-void drawGridScene() {
+void drawMovementScene() {
+  println(counter);
+  colorMode(RGB, 255, 255, 255);
+  
+  println(rotatetrigger);
 
-  counter=counter+0.01;
-
-  if (counter > 7.5) {
-    counter = 5;
-
-    color tmp = gridForeground;
-    gridForeground = gridBackground;
-    gridBackground = tmp;
-    rotatecounter =rotatecounter+5;
-    rund = rund+5;
-    
-    //rotatetrigger3 = random(0.05, 0.1);
-    
-
-    if (rund >= 40) {
-      rund=0;
+  if (frameCount %60 ==0) {
+    startLocations.clear();
+    startLocations.addAll(endLocations);
+    endLocations.clear();
+    for (int i=0; i<lineCount; i++) {
+      endLocations.add(random(50, width-50));
     }
   }
 
 
-  float r = map(noise(0, frameCount*0.001), 0, 1, -width/8, width/2);
-  float g = map(noise(100, frameCount*0.001), 0, 1, -width/8, width/2);
-  float b = map(noise(200, frameCount*0.001), 0, 1, -width/8, width/2);
-  float trcl = map(noise(200, frameCount*0.001), 0, 1, 0, width/4);
+
+  float r = map(noise(24, frameCount*0.001), 0, 1, -width/8, width/2);
+  float g = map(noise(163, frameCount*0.001), 0, 1, -width/8, width/2);
+  float b = map(noise(250, frameCount*0.001), 0, 1, -width/8, width/2);
+  float trcl = map(noise(200, frameCount*0.001), 0, 1, 0, 100);
   
-  //rotateX(radians(frameCount*rotatetrigger3));
-  //rotateY(radians(frameCount*rotatetrigger3));
-  //rotateY(radians(frameCount*rotatetrigger3);
-  
-//println(rotatetrigger3);
+  float rndscale = map(noise(99, frameCount*0.001), 0, 1, 0.001,0.25);
 
-  colorMode(RGB, 255, 255, 255);
-
-  background(gridBackground);
-
-  int cellCountY = (int) pow(2, counter);
-  float cellSize = (float) height / cellCountY;
-  int cellCountX = (int) (width / cellSize);
+//strokeWeight(5);
 
 
-  //translate(width/2, height/2);
 
-  for (int x = -cellCountX / 2; x<= cellCountX /2; x++) {
-    for (int y = -cellCountY / 2; y<= cellCountY /2; y++) {
-      if ((x +y) % 45 ==0) {
-        noStroke();
 
-        fill(r, g, b, trcl);
-        rect(x * cellSize/2, y * cellSize/4, x/2 * cellSize/2, y/2 * cellSize/6, rund);
-        rotate(rotatecounter);
-      }
+
+  background(0);
+  stroke(255);
+  strokeWeight(counter);
+  stroke(r, g, b, trcl);
+  scale(0.75);
+
+
+rotatetrigger = map(noise(92, frameCount*0.001), 0, 1, 0.1, 1.0);
+//rotatetrigger = random(0.1, 1.5);
+
+
+
+rotateX(radians(frameCount*rotatetrigger));
+rotateY(radians(frameCount*rotatetrigger/2));
+rotate(radians(frameCount*rotatetrigger*2));
+
+if(rotatetrigger >= 0.2){
+rotatetrigger = 0;
+}
+
+noFill();
+strokeWeight(10);
+sphere(100);
+strokeWeight(counter);
+
+strokeCap(PROJECT);
+
+
+
+  for (int i=0; i<lineCount; i++) {
+    float start = startLocations.get(i);
+    float end = endLocations.get(i);
+
+    float time = (float) frameCount %60 /60;
+    float currentStart = lerp(start, end, time);
+    float currentEnd = lerp(end, start, time);
+
+    //time = pow(time,2); // Linear
+    time = pow(time, 4); // Ease In 
+    //time = pow(time, 1f/8); // Ease Out
+      //time = 0.5 - (cos(PI*time) /2); //Ease In-Out
+
+    float location = lerp(currentStart, currentEnd, 0);
+    rotate(0.01);
+    counter=counter+0.001;
+    line(location, -64, location, 64);
+    
+    
+    //pushMatrix();
+    //rotate(45);
+    //popMatrix();  
+    
+
+    if (counter >= 20) {
+      counter = 20;
     }
+    
+    //frameCout
   }
 }
